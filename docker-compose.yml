@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+    landing:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: landing
+        container_name: landing
+        restart: unless-stopped
+        networks:
+            - app-network
+
+    webserver:
+        image: nginx:mainline-alpine
+        container_name: webserver
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - web-root:/var/www/html
+            - ./nginx-conf:/etc/nginx/conf.d
+            - certbot-etc:/etc/letsencrypt
+            - certbot-var:/var/lib/letsencrypt
+        depends_on:
+            - landing
+        networks:
+            - app-network
+
+    certbot:
+        image: certbot/certbot
+        container_name: certbot
+        volumes:
+            - certbot-etc:/etc/letsencrypt
+            - certbot-var:/var/lib/letsencrypt
+            - web-root:/var/www/html
+        depends_on:
+            - webserver
+        command: certonly --webroot --webroot-path=/var/www/html --email alexnagorny.an@gmail.com --agree-tos --no-eff-email --staging -d http://xn--80acmlhv0b.xn--80aaplhu0a.xn--p1ai/  -d www.http://xn--80acmlhv0b.xn--80aaplhu0a.xn--p1ai/
+
+volumes:
+    certbot-etc:
+    certbot-var:
+    web-root:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/root/simple-landing/views/
+            o: bind
+
+networks:
+    app-network:
+        driver: bridge
