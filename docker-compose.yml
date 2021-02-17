@@ -13,7 +13,7 @@ services:
 
     certbot:
         image: certbot/certbot:latest
-#        command: certonly --webroot --webroot-path=/var/www/certbot --email alexnagorny.an@gmail.com --agree-tos --no-eff-email --staging -d vizitka.tech -d www.vizitka.tech
+        command: certonly --webroot --webroot-path=/var/www/certbot --email alexnagorny.an@gmail.com --agree-tos --no-eff-email --staging -d vizitka.tech -d www.vizitka.tech
         volumes:
             - ./certbot/conf:/etc/letsencrypt
             - ./certbot/logs:/var/log/letsencrypt
