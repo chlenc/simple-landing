@@ -1,23 +1,21 @@
-version: '3.4'
-
+version: "3.8"
 services:
     web:
-        image: nginx:1.14.2-alpine
+        image: nginx:latest
         restart: always
         volumes:
-            - ./public_html:/public_html
-            - ./conf.d:/etc/nginx/conf.d/
-            - ./dhparam:/etc/nginx/dhparam
-            - ./certbot/conf/:/etc/nginx/ssl/
-            - ./certbot/data:/usr/share/nginx/html/letsencrypt
+            - ./public:/var/www/html
+            - ./conf.d:/etc/nginx/conf.d
+            - ./certbot/conf:/etc/nginx/ssl
+            - ./certbot/data:/var/www/certbot
         ports:
             - 80:80
             - 443:443
 
     certbot:
         image: certbot/certbot:latest
-        command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email alexnagorny.an@gmail.com --agree-tos --no-eff-email -d vizitka.tech
+        command: certonly --webroot --webroot-path=/var/www/certbot --email alexnagorny.an@gmail.com --agree-tos --no-eff-email -d vizitka.tech -d www.vizitka.tech
         volumes:
-            - ./certbot/conf/:/etc/letsencrypt
-            - ./certbot/logs/:/var/log/letsencrypt
-            - ./certbot/data:/usr/share/nginx/html/letsencrypt
+            - ./certbot/conf:/etc/letsencrypt
+            - ./certbot/logs:/var/log/letsencrypt
+            - ./certbot/data:/var/www/certbot
