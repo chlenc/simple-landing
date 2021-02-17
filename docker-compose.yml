@@ -1,16 +1,15 @@
 version: "3.8"
 services:
     web:
-        image: nginx:latest
-        restart: always
-        volumes:
-            - ./public:/var/www/html
-            - ./conf.d:/etc/nginx/conf.d
-            - ./certbot/conf:/etc/nginx/ssl
-            - ./certbot/data:/var/www/certbot
+        build: ./public
+        container_name: landing
         ports:
             - 80:80
             - 443:443
+        volumes:
+            - ./certbot/conf:/etc/nginx/ssl
+            - ./certbot/data:/var/www/certbot
+
 
     certbot:
         image: certbot/certbot:latest
