@@ -7,14 +7,15 @@ services:
             - 80:80
             - 443:443
         volumes:
-            - ./certbot/conf:/etc/nginx/ssl
-            - ./certbot/data:/var/www/certbot
+            - ./certs:/etc/nginx/certs
+#            - ./certbot/conf:/etc/nginx/ssl
+#            - ./certbot/data:/var/www/certbot
 
 
-    certbot:
-        image: certbot/certbot:latest
-        command: certonly --webroot --webroot-path=/var/www/certbot --email alexnagorny.an@gmail.com --agree-tos --no-eff-email --staging -d vizitka.tech -d www.vizitka.tech
-        volumes:
-            - ./certbot/conf:/etc/letsencrypt
-            - ./certbot/logs:/var/log/letsencrypt
-            - ./certbot/data:/var/www/certbot
+#    certbot:
+#        image: certbot/certbot:latest
+#        command: certonly --webroot --webroot-path=/var/www/certbot --email alexnagorny.an@gmail.com --agree-tos --no-eff-email --staging -d vizitka.tech -d www.vizitka.tech
+#        volumes:
+#            - ./certbot/conf:/etc/letsencrypt
+#            - ./certbot/logs:/var/log/letsencrypt
+#            - ./certbot/data:/var/www/certbot
